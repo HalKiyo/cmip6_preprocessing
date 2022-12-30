@@ -13,7 +13,7 @@ def main():
     model = 'UKESM1-1-LL'
     variable = 'pr'
 
-    save_flag = True
+    save_flag = False
     conc_flag = False
     reverse_flag = False
 
