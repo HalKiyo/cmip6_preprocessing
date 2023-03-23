@@ -59,6 +59,7 @@ def main():
     #pre._plot_std(val_coarse_std[8,:,:], reverse_flag=reverse_flag)
 
     # save as pickle file
+    pre._imshow(val[8,:,:], reverse_flag=reverse_flag)
     pre.save(val, val_clim, val_variance, val_anom, val_std,
              val_coarse, val_coarse_clim, val_coarse_variance, val_coarse_anom, val_coarse_std, save_flag=save_flag)
     plt.show()
