@@ -63,6 +63,7 @@ def main():
     #pre._plot_std(val_coarse_std[8,:,:], reverse_flag=reverse_flag)
 
     # save as pickle file
+    pre._imshow(val[8,:,:], reverse_flag=reverse_flag)
     pre.save(val, val_clim, val_variance, val_anom, val_std,
              val_coarse, val_coarse_clim, val_coarse_variance, val_coarse_anom, val_coarse_std, save_flag=save_flag)
 
@@ -247,32 +248,35 @@ class Preprocess():
 
         return val
 
-    def anomaly(self, val):
-        val_anom = val.copy()
+    def anomaly(self, x):
+        dup = x.copy()
+        val_anom = np.empty(dup.shape)
         for mon in range(12):
-            val_clim = val[mon::12, :, :].mean(axis=0)
-            val_anom[mon::12, :, :] = val[mon::12, :, :] - val_clim
+            val_clim = dup[mon::12, :, :].mean(axis=0)
+            val_anom[mon::12, :, :] = dup[mon::12, :, :] - val_clim
             print(mon)
         return val_anom
 
-    def standardize(self, val):
-        val_std = val.copy()
-        val_clim = np.empty((12, val.shape[1], val.shape[2]))
-        val_variance = np.empty((12, val.shape[1], val.shape[2]))
+    def standardize(self, x):
+        dup = x.copy()
+        val_std = np.empty(dup.shape)
+        val_clim = np.empty((12, dup.shape[1], dup.shape[2]))
+        val_variance = np.empty((12, dup.shape[1], dup.shape[2]))
 
         for mon in range(12):
-            clim = val[mon::12, :, :].mean(axis=0)
-            variance = val[mon::12, :, :].std(axis=0)
+            clim = dup[mon::12, :, :].mean(axis=0)
+            variance = dup[mon::12, :, :].std(axis=0)
             val_clim[mon, :, :] = clim
             val_variance[mon, :, :] = variance
-            val_std[mon::12, :, :] = (val[mon::12, :, :] - clim) / variance
+            val_std[mon::12, :, :] = (dup[mon::12, :, :] - clim) / variance
             print(mon)
         return val_clim, val_variance, val_std
 
-    def interpolation(self, val_raw):
-        val_coarse = val_raw[:, :int(self.lt/self.upscale_rate), :int(self.ln/self.upscale_rate)]
+    def interpolation(self, x):
+        dup = x.copy()
+        val_coarse = dup[:, :int(self.lt/self.upscale_rate), :int(self.ln/self.upscale_rate)]
         for time in range(len(val_coarse)):
-            val_coarse[time, :, :] = basemap.interp(val_raw[time, :, :],
+            val_coarse[time, :, :] = basemap.interp(dup[time, :, :],
                                                     self.lons, self.lats, 
                                                     self.lons_sub, self.lats_sub,
                                                     order=0)
