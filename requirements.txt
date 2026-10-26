@@ -1,0 +1,7 @@
+numpy
+netCDF4
+# only needed for --plot
+matplotlib
+cartopy
+colorcet
+cmaps
