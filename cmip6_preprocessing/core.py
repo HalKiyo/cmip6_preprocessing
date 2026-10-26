@@ -14,7 +14,7 @@ UPSCALE_RATE = 5  # from 1x1 to 5x5
 
 # unit conversion applied to the raw values
 CONVERT = {
-    "pr": lambda x: x * 87400,  # from kg m-2 s-1 to mm/day
+    "pr": lambda x: x * 86400,  # from kg m-2 s-1 to mm/day
     "tsl": lambda x: x - 273,  # from K to degC
 }
 
