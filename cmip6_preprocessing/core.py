@@ -43,7 +43,7 @@ def load_file(path, variable, n_months, depth=0, masked_depth_mean=False, conc=F
             data = var[:][:n_months, ::-1, :]
     data = ma.filled(data[:, ULIM:LLIM, :], fill_value=FILL_VALUE)
     if conc:
-        data = _conc(data)
+        data = np.where(_conc(data) > MASK_THRESHOLD, FILL_VALUE, _conc(data))
     return data
 
 
